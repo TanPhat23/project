@@ -28,7 +28,7 @@ export default function Home() {
      w-screen "
     >
       <h1
-        className="m-32 text-5xl flex justify-center md:w-32 lg:w-96 xl:w-64 "
+        className="m-32 text-5xl flex justify-center md:w-32 lg:w-96 xl:w-32"
         id="text"
         
       >
