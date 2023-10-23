@@ -7,5 +7,4 @@ const authLayout = ({ children} : {
         </div>
     )
 }
-
 export default authLayout
