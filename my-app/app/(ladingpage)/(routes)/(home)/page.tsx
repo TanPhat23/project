@@ -27,10 +27,7 @@ export default function Home() {
       className="flex justify-between h-screen overflow-hidden
      w-screen "
     >
-      <h1
-        className="m-32 text-5xl flex justify-center"
-        id="text"
-      >
+      <h1 className="m-32 text-5xl flex justify-center" id="text">
         HO CHI MINH UNIVERSITY TECHNOLOGY
       </h1>
       <div
