@@ -20,7 +20,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         lang="en"
-        className="h-screen overflow-hidden bg-gradient-to-r from-purple-400 to-blue-400"
+        className="overflow-hidden"
       >
         <body className={inter.className}>{children}</body>
       </html>

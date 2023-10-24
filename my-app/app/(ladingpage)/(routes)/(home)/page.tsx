@@ -32,6 +32,8 @@ export default function Home() {
         id="text"
         
       >
+      <h1 className="m-32 text-5xl flex justify-center" id="text">
+
         HO CHI MINH UNIVERSITY TECHNOLOGY
       </h1>
       <div
