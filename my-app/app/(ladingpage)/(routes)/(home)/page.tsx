@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import SplitType from "split-type";
@@ -28,12 +28,9 @@ export default function Home() {
      w-screen "
     >
       <h1
-        className="m-32 text-5xl flex justify-center md:w-32 lg:w-96 xl:w-32"
+        className="m-32 text-5xl flex justify-center md:w-32 lg:w-96"
         id="text"
-        
       >
-      <h1 className="m-32 text-5xl flex justify-center" id="text">
-
         HO CHI MINH UNIVERSITY TECHNOLOGY
       </h1>
       <div
