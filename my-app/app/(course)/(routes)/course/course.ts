@@ -3,7 +3,7 @@ const courses = [
   {
     label: "Co So Lap Trinh",
     icon: CircleDot,
-    href: "/problemPage",
+    href: "/problem",
   },
   {
     label: "Co So Lap Trinh",

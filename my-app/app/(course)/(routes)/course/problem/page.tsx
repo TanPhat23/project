@@ -25,13 +25,13 @@ const Problem: React.FC<ProblemsTableProps> = () => {
                   <CheckCircle fontSize={18} width={18} />
                 </th>
                 <td
-                  className={`px-6 py-4 ${
+                  className={`px-6 py-4 ${  
                     idx % 2 == 1 ? "hover:text-gray-400" : "hover:text-gray-600"
                   }`}
                 >
                   <Link
-                    href={`/course/problemPage/[id]`}
-                    as={`/course/problemPage/${problem.id}`}
+                    href={`/problem/[id]`}
+                    as={`/problem/${problem.id}`}
                   >
                     {problem.title}
                   </Link>
