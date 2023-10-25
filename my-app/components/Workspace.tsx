@@ -1,15 +1,16 @@
-import Split from "react-split"
-import ProblemDescription from "./WorksSpaceDescription"
-type WorkSpaceProps = {}
+import Split from "react-split";
+import ProblemDescription from "./WorksSpaceDescription";
+import PlayGround from "./PlayGround";
+type WorkSpaceProps = {};
 const Workspace: React.FC<WorkSpaceProps> = () => {
   return (
-    <Split className="split" minSize={0}>
-        <ProblemDescription/>
-        <div className="h-screen">
-          The Code Editor will be here
-        </div>
-    </Split>
-  )
-}
+    <div className="scrollbar scrollbar-thumb-gray-900 scroll-track-gray-100">
+      <Split className="split" minSize={0}>
+        <ProblemDescription />
+        <PlayGround />
+      </Split>
+    </div>
+  );
+};
 
-export default Workspace
+export default Workspace;
