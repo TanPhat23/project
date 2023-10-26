@@ -50,7 +50,7 @@
     },
     {
       id: "container-with-most-water",
-      title: "Container With Most Water",
+      title: "container-with-most-water",
       difficulty: "Medium",
       category: "Two Pointers",
       order: 6,
@@ -84,7 +84,7 @@
       id: "subsets",
       title: "Subsets",
       difficulty: "Medium",
-      category: "Backtracking",
+      category: " ",
       order: 10,
       videoId: "",
     },

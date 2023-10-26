@@ -6,7 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 const links = [
   {
     label: "Contact",
-    href: "/",
+    href: "/contact",
   },
   {
     label: "Course",
@@ -14,7 +14,7 @@ const links = [
   },
   {
     label: "Info",
-    href: "/",
+    href: "/info",
   },
 ];
 const Navbar = () => {

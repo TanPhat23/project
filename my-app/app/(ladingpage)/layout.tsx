@@ -1,6 +1,7 @@
+
 import Navbar from "@/components/Navbar";
 
-const PageLayout = ({ children }: { children: React.ReactNode }) => {
+const PageLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <main className="h-screen overflow-hidden bg-gradient-to-r from-purple-400 to-blue-400">
@@ -13,3 +14,4 @@ const PageLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default PageLayout;
+

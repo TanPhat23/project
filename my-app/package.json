@@ -17,6 +17,8 @@
     "assert": "^2.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "firebase": "^10.5.0",
     "gsap": "^3.12.2",
     "i": "^0.3.7",
     "lucide-react": "^0.288.0",

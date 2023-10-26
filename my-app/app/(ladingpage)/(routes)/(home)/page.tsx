@@ -3,8 +3,15 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import SplitType from "split-type";
 import gsap from "gsap";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const {user} = useUser()
+  const router = useRouter()
+  if(!user){
+    router.push("/sign-up")
+  }
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     setIsVisible(true);
@@ -22,6 +29,7 @@ export default function Home() {
     duration: 0.5,
   });
   gsap.from(".logo", { duration: 1.5, opacity: 0.8, scale: 1.3, ease: "back" });
+
   return (
     <div
       className="flex justify-between h-screen overflow-hidden

@@ -1,7 +1,8 @@
 import { FullscreenIcon, Settings } from "lucide-react";
-import React from "react";
+import { Problem } from "@/lib/problems/types";
 
-type PreferenceNavProps = {};
+type PreferenceNavProps = {
+};
 
 const PreferenceNav: React.FC<PreferenceNavProps> = () => {
   return (
