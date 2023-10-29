@@ -1,3 +1,4 @@
+"use client"
 import Split from "react-split";
 import PreferenceNavbar from "./PreferenceNavbar";
 import CodeMirror from "@uiw/react-codemirror";
@@ -25,7 +26,7 @@ const PlayGround: React.FC<PlayGRoundProps> = ({ problem }) => {
         >
           <div className="w-full overflow-auto">
             <CodeMirror
-              value={problem.starterCode}
+              value={problem?.starterCode}
               theme={vscodeDark}
               extensions={[javascript()]}
               style={{ fontSize: 16 }}
@@ -42,7 +43,7 @@ const PlayGround: React.FC<PlayGRoundProps> = ({ problem }) => {
             </div>
 
             <div className="flex">
-              {problem.examples.map((example, index) => (
+              {problem?.examples.map((example, index) => (
                 <div
                   className="mr-2 items-start mt-2 text-white"
                   key={example.id}
@@ -67,11 +68,11 @@ const PlayGround: React.FC<PlayGRoundProps> = ({ problem }) => {
             <div className="font-semibold">
               <p className="text-sm font-medium mt-4 text-white">Input:</p>
               <div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-                {problem.examples[activeTestCaseId].inputText}
+                {problem?.examples[activeTestCaseId].inputText}
               </div>
               <p className="text-sm font-medium mt-4 text-white">Output:</p>
               <div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-                {problem.examples[activeTestCaseId].outputText}
+                {problem?.examples[activeTestCaseId].outputText}
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+"use client"
 import { FullscreenIcon, Settings } from "lucide-react";
 import { Problem } from "@/lib/problems/types";
 

@@ -1,16 +1,21 @@
+"use client";
 import Split from "react-split";
 import ProblemDescription from "./WorksSpaceDescription";
 import PlayGround from "./PlayGround";
 import { Problem } from "@/lib/problems/types";
+import { problems } from "@/lib/problems";
+
+import { usePathname } from "next/navigation";
+
 type WorkSpaceProps = {
-  problem: Problem
+  problem: Problem;
 };
-const Workspace: React.FC<WorkSpaceProps> = ({problem}) => {
+const Workspace: React.FC<WorkSpaceProps> = ({ problem }) => {
   return (
     <div className="scrollbar scrollbar-thumb-gray-900 scroll-track-gray-100">
       <Split className="split h-full">
-        <ProblemDescription problem = {problem}/>
-        <PlayGround problem = {problem}/>
+        <ProblemDescription problem={problem} />
+        <PlayGround problem={problem} />
       </Split>
     </div>
   );

@@ -1,3 +1,4 @@
+"use client"
 import { ChevronUp } from "lucide-react";
 
 type EditorFooterProps = {};

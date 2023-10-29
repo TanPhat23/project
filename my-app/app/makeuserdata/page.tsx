@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react"; // Import useEffect and useState
+import { useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -21,12 +21,7 @@ export default function AddData() {
     starredProblems: [],
   };
   const { getToken } = useAuth();
-  const [submit, setSumit] = useState(false);
-
-  useEffect(() => {
-    handleSubmit();
-  }, []);
-
+  const { push } = useRouter();
   const handleSubmit = async () => {
     const firebaseClerkToken = await getToken({
       template: "integration_firebase",
@@ -35,13 +30,17 @@ export default function AddData() {
       auth,
       firebaseClerkToken
     );
-    console.log("user ::", userCredentials.user);
     if (user) {
       await setDoc(doc(firestore, "users", user?.id.toString()), userData);
-      setSumit(true);
+      
     }
-    if (submit) router.push("/");
   };
-  const router = useRouter();
-  return <div></div>;
+  useEffect(() => {
+    handleSubmit();
+    setTimeout(() => {
+      push("/");
+    }, 5000);
+  }, [push]);
+
+  return <div>hello</div>;
 }
