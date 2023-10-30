@@ -30,9 +30,10 @@ export default function AddData() {
       auth,
       firebaseClerkToken
     );
+    console.log(userCredentials);
+
     if (user) {
       await setDoc(doc(firestore, "users", user?.id.toString()), userData);
-      
     }
   };
   useEffect(() => {
