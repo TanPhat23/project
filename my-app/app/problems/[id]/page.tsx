@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import Workspace from "@/components/Workspace";
+import Workspace from "@/components/problemComponents/Workspace";
 import { problems } from "@/lib/problems";
 import { Problem } from "@/lib/problems/types";
 import { notFound } from "next/navigation";
@@ -16,13 +16,13 @@ type ProblemPageProps = {
 };
 const ProblemPage: React.FC<ProblemPageProps> = ({ params }) => {
   const { id } = params;
-  const problem = problems[id]; 
+  const problem = problems[id];
 
   if (!problem) return notFound();
   return (
     <div>
-      <Navbar/>
-      <Workspace params={params}/>
+      <Navbar />
+      <Workspace params={params} />
     </div>
   );
 };

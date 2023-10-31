@@ -1,10 +1,15 @@
 "use client";
-import ProblemsTable from "@/components/ProblemTable";
+import ProblemsTable from "@/components/problemComponents/ProblemTable";
+import SearchBar from "@/components/problemComponents/SearchBar";
 
 import { useState } from "react";
 
 export default function Problem() {
   const [loadingProblems, setLoadingProblems] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
   return (
     <main className="ml-36 flex flex-col">
       {loadingProblems && (
@@ -14,9 +19,11 @@ export default function Problem() {
           ))}
         </div>
       )}
-      <div>
-        <table className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] ml-72" >
-          
+      <div className="flex flex-col">
+        <div className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] ml-72 mt-5">
+          <SearchBar onSearch={handleSearch} />
+        </div>
+        <table className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] ml-72">
           {!loadingProblems && (
             <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b ">
               <tr>
@@ -36,7 +43,10 @@ export default function Problem() {
               </tr>
             </thead>
           )}
-          <ProblemsTable setLoadingProblems={setLoadingProblems} />
+          <ProblemsTable
+            setLoadingProblems={setLoadingProblems}
+            searchQuery={searchQuery}
+          />
         </table>
       </div>
     </main>

@@ -17,8 +17,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { firestore } from "@/app/firebase/firebase";
-import RectangleSkeleton from "./skeletons/RectangleSkeleton";
-import CircleSkeleton from "./skeletons/CircleSkeleton";
+import RectangleSkeleton from "../skeletons/RectangleSkeleton";
+import CircleSkeleton from "../skeletons/CircleSkeleton";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "react-toastify";
 

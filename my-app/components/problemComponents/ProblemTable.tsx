@@ -16,26 +16,32 @@ import { firestore } from "@/app/firebase/firebase";
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
+  searchQuery: string
 };
 const ProblemsTable: React.FC<ProblemsTableProps> = ({
   setLoadingProblems,
+  searchQuery,
 }) => {
   const problems = useGetProblems(setLoadingProblems);
   const solvedProblems = useGetSolvedProblems();
+  const filteredProblems = problems.filter((problem) =>
+    problem.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <tbody className="w-full">
-      {problems.map((problem, idx) => {
+      {filteredProblems.map((problem, idx) => {
         const difficultyColor =
           problem.difficulty === "Easy"
             ? "text-green-500"
-            : "Medium"
+            : problem.difficulty === "Medium"
             ? "text-yellow-500"
-            : "Hard"
+            : problem.difficulty === "Hard"
             ? "text-pink-500"
             : "";
+
         return (
           <tr
-            className={`${idx % 2 == 1 ? "" : "bg-gray-800 text-white"}`}
+            className={`${idx % 2 === 1 ? "" : "bg-gray-800 text-white"}`}
             key={problem.id}
           >
             <th className="px-2 py-4 font-medium whitespace-nowrap text-green-500">
@@ -45,7 +51,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             </th>
             <td
               className={`px-6 py-4 ${
-                idx % 2 == 1 ? "hover:text-gray-400" : "hover:text-gray-600"
+                idx % 2 === 1 ? "hover:text-gray-400" : "hover:text-gray-600"
               }`}
             >
               {problem.link ? (
