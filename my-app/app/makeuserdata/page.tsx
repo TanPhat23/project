@@ -26,11 +26,6 @@ export default function AddData() {
     const firebaseClerkToken = await getToken({
       template: "integration_firebase",
     });
-    const userCredentials = await signInWithCustomToken(
-      auth,
-      firebaseClerkToken
-    );
-    console.log(userCredentials);
 
     if (user) {
       await setDoc(doc(firestore, "users", user?.id.toString()), userData);
