@@ -2,20 +2,22 @@
 import Split from "react-split";
 import ProblemDescription from "./ProblemDescription";
 import PlayGround from "./PlayGround";
-import { Problem } from "@/lib/problems/types";
 import { useState } from "react";
+import { problems } from "@/lib/problems";
 
-type WorkSpaceProps = {
-  problem: Problem;
-};
-const Workspace: React.FC<WorkSpaceProps> = ({ problem }) => {
+const Workspace = ({ params: { id } }: { params: { id: string } }) => {
+  const problem = problems[id];
   const [success, setSuccess] = useState(false);
   const [solved, setSolved] = useState(false);
   return (
     <Split className="split h-full">
-      <ProblemDescription problem={problem} _solved={solved}/>
+      <ProblemDescription problem={problem} _solved={solved} />
       <div>
-        <PlayGround problem={problem} setSuccess={setSuccess} setSolved={setSolved} />
+        <PlayGround
+          problem={problem}
+          setSuccess={setSuccess}
+          setSolved={setSolved}
+        />
       </div>
     </Split>
   );

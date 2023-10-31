@@ -1,6 +1,7 @@
 import { Check, ChevronDown, XIcon } from "lucide-react";
 import { PlayGroundSettings } from "./PlayGround";
-import useLocalStorage from "use-local-storage";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
+
 
 const EDITOR_FONT_SIZES = [
   "12px",
@@ -23,10 +24,10 @@ const SettingsModal: React.FC<PreferenceNavProps> = ({
   const handleClickDropDown = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    // const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
     e.stopPropagation();
     setSettings({ ...settings, dropDownIsOpen: !settings.dropDownIsOpen });
   };
+  
   return (
     <div className="text-white z-40">
       <div
@@ -61,7 +62,7 @@ const SettingsModal: React.FC<PreferenceNavProps> = ({
 
             <div className="px-6 pt-4 pb-6">
               <div className="mt-6 flex justify-between first:mt-0">
-                <div className="w-[340px]">
+                <div className="w-[340px]">   
                   <h3 className=" text-base font-medium">Font size</h3>
                   <h3 className="text-label-3  mt-1.5">
                     Choose your preferred font size for the code editor.
@@ -90,7 +91,11 @@ const SettingsModal: React.FC<PreferenceNavProps> = ({
                           <SettingsListItem
                             key={idx}
                             fontSize={fontSize}
-                            selectedOption={"14px"}
+                            selectedOption={settings.fontSize}
+                            handleFontSizeChange={(fontSize) => {
+                              setFontSize(fontSize);
+                              setSettings({ ...settings, fontSize: fontSize });
+                            }}
                           />
                         ))}
                       </ul>
@@ -110,13 +115,13 @@ export default SettingsModal;
 interface SettingsListItemProps {
   fontSize: string;
   selectedOption: string;
-  handleFontSizeChange: ()=> void
+  handleFontSizeChange: (fontSize: string) => void;
 }
 
 const SettingsListItem: React.FC<SettingsListItemProps> = ({
   fontSize,
   selectedOption,
-  handleFontSizeChange
+  handleFontSizeChange,
 }) => {
   return (
     <li className="relative flex h-8 cursor-pointer select-none py-1.5 pl-2 text-label-2 dark:text-dark-label-2 hover:bg-dark-fill-3 rounded-lg">
@@ -124,6 +129,7 @@ const SettingsListItem: React.FC<SettingsListItemProps> = ({
         className={`flex h-5 flex-1 items-center pr-2 ${
           selectedOption === fontSize ? "font-medium" : ""
         }`}
+        onClick={() => handleFontSizeChange(fontSize)}
       >
         <div className="whitespace-nowrap">{fontSize}</div>
       </div>

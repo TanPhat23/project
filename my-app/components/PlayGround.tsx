@@ -14,11 +14,17 @@ import { useRouter } from "next/router";
 import { problems } from "@/lib/problems";
 import { firestore } from "@/app/firebase/firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
 
 type PlayGRoundProps = {
   problem: Problem;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setSolved: React.Dispatch<React.SetStateAction<boolean>>;
+};
+type ParamsType = {
+  params: {
+    id: string;
+  };
 };
 export interface PlayGroundSettings {
   fontSize: string;
@@ -31,18 +37,17 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
   setSolved,
 }) => {
   const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
+  const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
   let [userCode, setUserCode] = useState<string>(problem.starterCode);
   const [settings, setSettings] = useState<PlayGroundSettings>({
-    fontSize: "16px",
+    fontSize: fontSize,
     settingsModalIsOpen: false,
     dropDownIsOpen: false,
   });
 
   const { user } = useUser();
-  const {
-    query: { id },
-  } = useRouter();
-  
+  const id: string = problem.id;
+
   const handleSubmit = async () => {
     if (!user) {
       toast.error("You need to be log in to write code");
@@ -53,25 +58,24 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
       const cb = new Function(`return ${userCode}`)();
       const handler = problems[id as string].handlerFunction;
 
-
-      if(typeof handler === "function"){
-        const success = handler(cb)
-      if (success) {
-        toast.success("Congrats! All tests passed!", {
-          position: "top-center",
-          autoClose: 3000,
-          theme: "dark",
+      if (typeof handler === "function") {
+        const success = handler(cb);
+        if (success) {
+          toast.success("Congrats! All tests passed!", {
+            position: "top-center",
+            autoClose: 3000,
+            theme: "dark",
+          });
+          setSuccess(true);
+          setTimeout(() => {
+            setSuccess(false);
+          }, 4000);
+          setSolved(true);
+        }
+        const userRef = doc(firestore, "users", user.id);
+        await updateDoc(userRef, {
+          solvedProblems: arrayUnion(id),
         });
-        setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-        }, 4000);
-        setSolved(true);
-      }
-      const userRef = doc(firestore, "users", user.id);
-      await updateDoc(userRef, {
-        solvedProblems: arrayUnion(id),
-      });
       }
     } catch (error: any) {
       console.log(error.message);
@@ -106,10 +110,11 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
     setUserCode(value);
     localStorage.setItem(`code-${id}`, JSON.stringify(value));
   };
+
   return (
     <>
       <div className="flex flex-col bg-dark-layer-1 relative overflow-x-hidden">
-        <PreferenceNavbar settings ={settings} setSettings ={setSettings}/>
+        <PreferenceNavbar settings={settings} setSettings={setSettings} />
         <Split
           className="h-[calc(100vh-94px)]"
           direction="vertical"
@@ -170,7 +175,7 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
             </div>
           </div>
         </Split>
-        <EditorFooter handleSubmit={handleSubmit}  />
+        <EditorFooter handleSubmit={handleSubmit} />
       </div>
     </>
   );
