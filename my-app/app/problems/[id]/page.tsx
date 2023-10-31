@@ -2,8 +2,8 @@ import Navbar from "@/components/Navbar";
 import Workspace from "@/components/problemComponents/Workspace";
 import { problems } from "@/lib/problems";
 import { notFound } from "next/navigation";
-export const dynamicParams = true;
-export const dynamic = "force-dynamic";
+export const dynamicParams = false;
+export const dynamic = "force-static";
 export async function generateStaticParams() {3 
   const paths = Object.keys(problems).map((key) => ({
     params: { id: key },
