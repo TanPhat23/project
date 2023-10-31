@@ -4,7 +4,7 @@ import { problems } from "@/lib/problems";
 import { notFound } from "next/navigation";
 export const dynamicParams = false;
 export const dynamic = "force-static";
-export async function generateStaticParams() {3 
+export async function generateStaticParams() {
   const paths = Object.keys(problems).map((key) => ({
     params: { id: key },
   }));
