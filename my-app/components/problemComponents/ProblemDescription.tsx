@@ -1,6 +1,5 @@
 "use client";
 import { DBProblem, Problem } from "@/lib/problems/types";
-import "../styles/tailwind.css";
 import {
   CheckCircle,
   LoaderIcon,
