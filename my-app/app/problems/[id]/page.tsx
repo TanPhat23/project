@@ -3,7 +3,8 @@ import Workspace from "@/components/problemComponents/Workspace";
 import { problems } from "@/lib/problems";
 import { notFound } from "next/navigation";
 export const dynamicParams = false;
-export async function generateStaticParams() {
+export const dynamic = "force-dynamic";
+export async function generateStaticParams() {3 
   const paths = Object.keys(problems).map((key) => ({
     params: { id: key },
   }));
