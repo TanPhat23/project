@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { firestore } from "@/app/firebase/firebase";
+import { firestore } from "@/lib/firebase/firebase";
 import { useRouter } from "next/navigation";
 
 export default function AddData() {

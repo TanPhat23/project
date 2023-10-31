@@ -15,7 +15,7 @@ import {
   runTransaction,
   updateDoc,
 } from "firebase/firestore";
-import { firestore } from "@/app/firebase/firebase";
+import { firestore } from "@/lib/firebase/firebase";
 import RectangleSkeleton from "../skeletons/RectangleSkeleton";
 import CircleSkeleton from "../skeletons/CircleSkeleton";
 import { useUser } from "@clerk/nextjs";

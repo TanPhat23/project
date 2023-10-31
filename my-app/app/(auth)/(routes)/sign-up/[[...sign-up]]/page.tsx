@@ -1,4 +1,4 @@
-import { firestore } from "@/app/firebase/firebase";
+import { firestore } from "@/lib/firebase/firebase";
 import { SignUp, auth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 

@@ -12,11 +12,11 @@ import {
 } from "firebase/firestore";
 import { DBProblem } from "@/lib/problems/types";
 import { useUser } from "@clerk/nextjs";
-import { firestore } from "@/app/firebase/firebase";
+import { firestore } from "@/lib/firebase/firebase";
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
-  searchQuery: string
+  searchQuery: string;
 };
 const ProblemsTable: React.FC<ProblemsTableProps> = ({
   setLoadingProblems,

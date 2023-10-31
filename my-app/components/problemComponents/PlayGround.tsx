@@ -12,7 +12,7 @@ import { useUser } from "@clerk/nextjs";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { problems } from "@/lib/problems";
-import { firestore } from "@/app/firebase/firebase";
+import { firestore } from "@/lib/firebase/firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/lib/hooks/useLocalStorage";
 

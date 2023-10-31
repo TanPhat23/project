@@ -11,7 +11,11 @@ export async function generateStaticParams() {
   return paths;
 }
 
-export default async function ProblemPage({ params }: { params: { id: string } }) {
+export default async function ProblemPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
   const problem = problems[id];
 
