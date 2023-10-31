@@ -11,10 +11,7 @@ export async function generateStaticParams() {
   return paths;
 }
 
-type ProblemPageProps = {
-  params: { id: string };
-};
-const ProblemPage: React.FC<ProblemPageProps> = ({ params }) => {
+export default async function ProblemPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const problem = problems[id];
 
@@ -25,5 +22,4 @@ const ProblemPage: React.FC<ProblemPageProps> = ({ params }) => {
       <Workspace params={params} />
     </div>
   );
-};
-export default ProblemPage;
+}
