@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Workspace from "@/components/problemComponents/Workspace";
 import { problems } from "@/lib/problems";
-import { Problem } from "@/lib/problems/types";
 import { notFound } from "next/navigation";
 export const dynamicParams = false;
 export async function generateStaticParams() {
