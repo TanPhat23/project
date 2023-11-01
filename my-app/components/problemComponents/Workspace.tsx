@@ -5,9 +5,9 @@ import PlayGround from "./PlayGround";
 import { useState } from "react";
 import { problems } from "@/lib/problems";
 
-const Workspace = ({ params }: { params: { id: string } }) => {
-  const { id } = params;
-  const problem = problems[id];
+const Workspace = ({ params }: { params: { slug: string } }) => {
+  const { slug} = params;
+  const problem = problems[slug];
   const [success, setSuccess] = useState(false);
   const [solved, setSolved] = useState(false);
   return (
