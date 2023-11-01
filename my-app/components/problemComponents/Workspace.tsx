@@ -3,11 +3,13 @@ import Split from "react-split";
 import ProblemDescription from "./ProblemDescription";
 import PlayGround from "./PlayGround";
 import { useState } from "react";
-import { problems } from "@/lib/problems";
+import { Problem } from "@/lib/problems/types";
 
-const Workspace = ({ params }: { params: { slug: string } }) => {
-  const { slug} = params;
-  const problem = problems[slug];
+type WorkspaceProps = {
+  problem: Problem;
+};
+
+const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
   const [success, setSuccess] = useState(false);
   const [solved, setSolved] = useState(false);
   return (
