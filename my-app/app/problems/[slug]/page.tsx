@@ -3,6 +3,7 @@ import Workspace from "@/components/problemComponents/Workspace";
 import { firestore } from "@/lib/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
+export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
