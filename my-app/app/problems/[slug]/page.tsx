@@ -1,21 +1,19 @@
-
 import Navbar from "@/components/Navbar";
 import Workspace from "@/components/problemComponents/Workspace";
-import { firestore } from "@/lib/firebase/firebase";
-import { collection, getDocs } from "firebase/firestore";
 
-export const dynamicParams = false;
+import { problems } from "@/lib/problems";
 
-export async function generateStaticParams() {
-  const problems = await getDocs(collection(firestore, "problems"));
-  return problems.docs.map((d) => ({ slug: d.data()["id"] }));
-}
+import { notFound } from "next/navigation";
+
+
 
 export default async function ProblemPage({
   params,
 }: {
   params: { slug: string };
 }) {
+  const problem = problems[params.slug];
+  if (!problem) return notFound;
   return (
     <div>
       <Navbar />
