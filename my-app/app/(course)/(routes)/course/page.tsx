@@ -11,7 +11,7 @@ export default function Problem() {
     setSearchQuery(query);
   };
   return (
-    <main className="ml-36 flex flex-col">
+    <main className="ml-72 flex flex-col">
       {loadingProblems && (
         <div className="ml-72 flex w-full flex-col justify-center h-full animate-pulse">
           {[...Array(10)].map((_, idx) => (
@@ -20,9 +20,10 @@ export default function Problem() {
         </div>
       )}
       <div className="flex flex-col">
+        {!loadingProblems && (
         <div className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] ml-72 mt-5">
           <SearchBar onSearch={handleSearch} />
-        </div>
+        </div>)}
         <table className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] ml-72">
           {!loadingProblems && (
             <thead className="text-xs text-gray-700 uppercase dark:text-gray-400 border-b ">
@@ -39,6 +40,9 @@ export default function Problem() {
 
                 <th scope="col" className="px-6 py-3 w-0 font-medium">
                   Category
+                </th>
+                <th scope="col" className="px-6 py-3 w-0 font-medium">
+                  Video
                 </th>
               </tr>
             </thead>

@@ -1,15 +1,23 @@
 "use client";
-import { FullscreenIcon, Settings } from "lucide-react";
+import {  FullscreenIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import { PlayGroundSettings } from "./PlayGround";
+import { LanguageSettings, PlayGroundSettings } from "./PlayGround";
 import SettingsModal from "./SettingModal";
+import LanguageModal from "./LanguageModal";
 
 type PreferenceNavProps = {
-  settings: PlayGroundSettings
-  setSettings: React.Dispatch<React.SetStateAction<PlayGroundSettings>>
+  settings: PlayGroundSettings;
+  setSettings: React.Dispatch<React.SetStateAction<PlayGroundSettings>>;
+  selectedLanguage: LanguageSettings;
+  setSelectedLanguage: React.Dispatch<React.SetStateAction<LanguageSettings>>;
 };
 
-const PreferenceNav: React.FC<PreferenceNavProps> = ({settings, setSettings}) => {
+const PreferenceNav: React.FC<PreferenceNavProps> = ({
+  settings,
+  setSettings,
+  setSelectedLanguage,
+  selectedLanguage,
+}) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const handleFullScreen = async () => {
     if (isFullScreen) {
@@ -26,23 +34,21 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({settings, setSettings}) =>
       }
       setIsFullScreen(true);
     }
-    if(document.addEventListener){
-      document.addEventListener("fullscreenchange", exitHandler)
-      document.addEventListener('webkitfullscreenchange',exitHandler)
-      document.addEventListener("mozfullscreenchange",exitHandler)
-      document.addEventListener('MSFullscreenchange',exitHandler)
+    if (document.addEventListener) {
+      document.addEventListener("fullscreenchange", exitHandler);
+      document.addEventListener("webkitfullscreenchange", exitHandler);
+      document.addEventListener("mozfullscreenchange", exitHandler);
+      document.addEventListener("MSFullscreenchange", exitHandler);
     }
   });
+
   return (
     <div className="flex items-center justify-between bg-dark-layer-2 h-11 w-full">
       <div className="flex items-center text-white">
-        <button className="flex cursor-pointer items-center rounded focus:outline-none bg-dark-fill-3 text-dark-label-2 hover:bg-dark-fill-2  px-2 py-1.5 font-medium">
-          <div className="flex items-center px-1">
-            <div className="text-xs text-label-2 dark:text-dark-label-2">
-              JavaScript
-            </div>
-          </div>
-        </button>
+        <LanguageModal
+          setSelectedLanguage={setSelectedLanguage}
+          selectedLanguage={selectedLanguage}
+        />
       </div>
 
       <div className="flex items-center m-2">
@@ -65,7 +71,9 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({settings, setSettings}) =>
           <div className="preferenceBtn-tooltip">Full Screen</div>
         </button>
       </div>
-      {settings.settingsModalIsOpen && <SettingsModal settings={settings} setSettings={setSettings}/>}
+      {settings.settingsModalIsOpen && (
+        <SettingsModal settings={settings} setSettings={setSettings} />
+      )}
     </div>
   );
 };

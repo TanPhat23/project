@@ -19,10 +19,10 @@ export default function Home() {
   gsap.to(".char", {
     y: 0,
     stagger: 0.05,
-    delay: 0.02,
+    delay: 0.05,
     duration: 0.5,
   });
-  gsap.from(".logo", { duration: 1.5, opacity: 0.8, scale: 1.3, ease: "back" });
+  gsap.from(".logo", { duration: 1.5, opacity: 0.7, scale: 0.9, ease: "back" });
 
   return (
     <div
@@ -30,10 +30,10 @@ export default function Home() {
      w-screen "
     >
       <h1
-        className="m-32 text-5xl flex justify-center md:w-32 lg:w-96"
+        className="m-32 text-5xl flex justify-center md:w-32 lg:w-3/4"
         id="text"
       >
-        HO CHI MINH UNIVERSITY TECHNOLOGY
+        A GOOD PLACE FOR YOU TO PRACTICE CODING
       </h1>
       <div
         className={`${
@@ -43,13 +43,15 @@ export default function Home() {
         }`}
       >
         <div className="bg-orange-300 rounded-tl-full ">
-          <Image
-            className="logo"
-            src="/school.png"
-            width={700}
-            height={800}
-            alt="school"
-          />
+          <div className="">
+            <Image
+              className="logo"
+              src="/icon.png"
+              width={550}
+              height={600}
+              alt="school"
+            />
+          </div>
         </div>
       </div>
     </div>

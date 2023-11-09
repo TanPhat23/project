@@ -4,13 +4,13 @@ import PreferenceNavbar from "./PreferenceNavbar";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
+import { cpp } from "@codemirror/lang-cpp";
 import EditorFooter from "./EditorFooter";
 import { Problem } from "@/lib/problems/types";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 import { problems } from "@/lib/problems";
 import { firestore } from "@/lib/firebase/firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
@@ -30,6 +30,9 @@ export interface PlayGroundSettings {
   fontSize: string;
   settingsModalIsOpen: boolean;
   dropDownIsOpen: boolean;
+}
+export interface LanguageSettings{
+  language: string;
 }
 const PlayGround: React.FC<PlayGRoundProps> = ({
   problem,
@@ -98,6 +101,10 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
       }
     }
   };
+  let [selectedLanguage, setSelectedLanguage] = useState<LanguageSettings>({
+    language: "JavaScript",
+  });
+  
   useEffect(() => {
     const code = localStorage.getItem(`code-${id}`);
     if (user) {
@@ -114,7 +121,12 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
   return (
     <>
       <div className="flex flex-col bg-dark-layer-1 relative overflow-x-hidden">
-        <PreferenceNavbar settings={settings} setSettings={setSettings} />
+        <PreferenceNavbar
+          settings={settings}
+          setSettings={setSettings}
+          selectedLanguage={selectedLanguage}
+          setSelectedLanguage={setSelectedLanguage}
+        />
         <Split
           className="h-[calc(100vh-94px)]"
           direction="vertical"
@@ -126,7 +138,9 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
               value={userCode}
               theme={vscodeDark}
               onChange={onChange}
-              extensions={[javascript()]}
+              extensions={
+                selectedLanguage.language === "C++" ? [cpp()] : [javascript()]
+              }
               style={{ fontSize: settings.fontSize }}
             />
           </div>

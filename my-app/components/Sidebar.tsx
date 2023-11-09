@@ -36,7 +36,7 @@ export const Sidebar = () => {
             <Image fill alt="Logo" src="/logo2.png" />
           </div>
           <h1 className={cn("text-2xl font-bold", montserrat.className)}>
-            Hutech
+            IT-LEARN
           </h1>
         </Link>
         <div className="space-y-1">
