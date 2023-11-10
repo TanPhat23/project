@@ -8,7 +8,6 @@ import { cpp } from "@codemirror/lang-cpp";
 import EditorFooter from "./EditorFooter";
 import { Problem } from "@/lib/problems/types";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "react-toastify";
 import { problems } from "@/lib/problems";
@@ -18,7 +17,6 @@ import useLocalStorage from "@/lib/hooks/useLocalStorage";
 
 type PlayGRoundProps = {
   problem: Problem;
-  setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setSolved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type ParamsType = {
@@ -31,17 +29,18 @@ export interface PlayGroundSettings {
   settingsModalIsOpen: boolean;
   dropDownIsOpen: boolean;
 }
-export interface LanguageSettings{
+export interface LanguageSettings {
   language: string;
 }
-const PlayGround: React.FC<PlayGRoundProps> = ({
-  problem,
-  setSuccess,
-  setSolved,
-}) => {
+const PlayGround: React.FC<PlayGRoundProps> = ({ problem, setSolved }) => {
   const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
   const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
+  const [actual, setActual] = useState<any | undefined>(undefined);
+  const [actualTF, setActualTF] = useState<boolean[] | undefined>(undefined);
+  const [testcaseActive, setTestcaseActive] = useState<boolean>(true);
+  const [success, setSuccess] = useState<boolean | undefined>(undefined);
   let [userCode, setUserCode] = useState<string>(problem.starterCode);
+
   const [settings, setSettings] = useState<PlayGroundSettings>({
     fontSize: fontSize,
     settingsModalIsOpen: false,
@@ -56,55 +55,42 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
       toast.error("You need to be log in to write code");
       return;
     }
-    try {
-      userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
-      const cb = new Function(`return ${userCode}`)();
-      const handler = problems[id as string].handlerFunction;
-
-      if (typeof handler === "function") {
-        const success = handler(cb);
-        if (success) {
-          toast.success("Congrats! All tests passed!", {
-            position: "top-center",
-            autoClose: 3000,
-            theme: "dark",
-          });
-          setSuccess(true);
-          setTimeout(() => {
-            setSuccess(false);
-          }, 4000);
-          setSolved(true);
-        }
-        const userRef = doc(firestore, "users", user.id);
-        await updateDoc(userRef, {
-          solvedProblems: arrayUnion(id),
-        });
-      }
-    } catch (error: any) {
-      console.log(error.message);
-      if (
-        error.message.startsWith(
-          "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:"
-        )
-      ) {
-        toast.error("Oops! One or more test cases failed", {
-          position: "top-center",
-          autoClose: 3000,
-          theme: "dark",
-        });
-      } else {
-        toast.error(error.message, {
-          position: "top-center",
-          autoClose: 3000,
-          theme: "dark",
-        });
-      }
+    userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
+    const cb = new Function(`return ${userCode}`)();
+    const [results, resultsTF, success] = problems[id].handlerFunction(cb);
+    console.log(results);
+    console.log(resultsTF);
+    setActual(results);
+    setActualTF(resultsTF);
+    setSuccess(success);
+    setTestcaseActive(false);
+    if (success) {
+      toast.success("Congrats! All tests passed!", {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+      setSuccess(true);
+      setSolved(true);
+      const userRef = doc(firestore, "users", user.id);
+      await updateDoc(userRef, {
+        solvedProblems: arrayUnion(id),
+      });
+    } else {
+      toast.error("One or more test cases failed.", {
+        style: {
+          background: "#333",
+          color: "#fff",
+          marginRight: "70px",
+          marginTop: "40px",
+        },
+      });
     }
   };
   let [selectedLanguage, setSelectedLanguage] = useState<LanguageSettings>({
     language: "JavaScript",
   });
-  
+
   useEffect(() => {
     const code = localStorage.getItem(`code-${id}`);
     if (user) {
@@ -144,48 +130,113 @@ const PlayGround: React.FC<PlayGRoundProps> = ({
               style={{ fontSize: settings.fontSize }}
             />
           </div>
-          <div className="w-full px-5 overflow-auto">
-            <div className="flex h-10 items-center space-x-6">
-              <div className="relative flex h-full flex-col justify-center cursor-pointer">
-                <div className="text-sm font-medium leading-5 text-white">
-                  Text cases
-                </div>
-                <hr className=" absolute bottom-0 h-0.5 w-full rounded-full bg-white border-none" />
-              </div>
+          <div className="bg-[#282828] rounded-lg flex flex-col min-w-[354px]">
+            {/* TABS */}
+            <div className="flex w-full gap-8 px-5 min-h-[36px] h-9 rounded-t-lg bg-[#303030] items-center text-xs border-b-[1px] border-[#454545] font-medium text-[#eff1f6bf]">
+              <button
+                onClick={() => setTestcaseActive(true)}
+                className={`flex items-center ${
+                  testcaseActive && "border-b-[2px] text-white pt-[2px]"
+                } border-white h-full hover:text-white cursor-pointer`}
+              >
+                Testcase
+              </button>
+              <button
+                onClick={() => setTestcaseActive(false)}
+                className={`flex items-center ${
+                  !testcaseActive && "border-b-[2px] text-white pt-[2px]"
+                } border-white h-full hover:text-white cursor-pointer`}
+              >
+                Result
+              </button>
             </div>
-
-            <div className="flex">
-              {problem?.examples.map((example, index) => (
+            {/* Console */}
+            <div
+              className={`flex flex-col w-full overflow-y-auto bg-[#282828] rounded-b-lg p-5 ${
+                !actual &&
+                !testcaseActive &&
+                "items-center justify-center h-full"
+              }`}
+            >
+              {success != undefined && !testcaseActive && (
                 <div
-                  className="mr-2 items-start mt-2 text-white"
-                  key={example.id}
-                  onClick={() => setActiveTestCaseId(index)}
+                  className={`text-xl ${
+                    success ? "text-green-500" : "text-red-500"
+                  }  font-medium mb-4 -mt-1`}
                 >
-                  <div className="flex flex-wrap items-center gap-y-4">
-                    <div
-                      className={cn(
-                        "font-medium items-center transition-all focus:outline-none inline-block bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 cursor-pointer whitespace-nowrap",
-                        activeTestCaseId === index
-                          ? "text-white"
-                          : "text-gray-500"
-                      )}
-                    >
-                      Case {index + 1}
+                  {success ? "Accepted" : "Wrong Answer"}
+                </div>
+              )}
+              {/* Cases */}
+              {!actual && !testcaseActive ? (
+                <div className="text-sm text-[#ebebf54d]">
+                  You must run your code first
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex space-x-3 text-sm tracking-tight items-center text-[#eff1f6bf]">
+                    {problem.examples.map((example, index) => (
+                      <button
+                        onClick={() => setActiveTestCaseId(index)}
+                        key={example.id}
+                      >
+                        <div
+                          className={`${
+                            index == activeTestCaseId &&
+                            "bg-[#3E3E3E] text-white"
+                          } hover:bg-[#464646] rounded-lg hover:text-white py-1 px-3`}
+                        >
+                          <pre className="flex items-center whitespace-pre-wrap">
+                            {actualTF && !testcaseActive && (
+                              <div
+                                className={`h-1 w-1 mr-2 rounded-full ${
+                                  actualTF[index]
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                }`}
+                              ></div>
+                            )}
+
+                            <div>Case {index + 1}</div>
+                          </pre>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  <div>
+                    <p className="font-medium text-xs text-[#eff1f6bf]">
+                      Input:
+                    </p>
+                    <div className=" bg-[#3E3E3E] text-white rounded-lg py-2 px-4 mt-[9px]">
+                      <pre className="whitespace-pre-wrap">
+                        {problem.examples[activeTestCaseId].inputText}
+                      </pre>
                     </div>
                   </div>
+                  <div>
+                    <p className="font-medium text-xs text-[#eff1f6bf]">
+                      Output:
+                    </p>
+                    <div className=" bg-[#3E3E3E] text-white rounded-lg py-2 px-4 mt-[9px]">
+                      <pre className="whitespace-pre-wrap">
+                        {problem.examples[activeTestCaseId].outputText}
+                      </pre>
+                    </div>
+                  </div>
+                  {actual && !testcaseActive && (
+                    <div>
+                      <p className="font-medium text-xs text-[#eff1f6bf]">
+                        Actual:
+                      </p>
+                      <div className=" bg-[#3E3E3E] text-white rounded-lg py-2 px-4 mt-[9px]">
+                        <pre className="whitespace-pre-wrap">
+                          {JSON.stringify(actual[activeTestCaseId])}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
-            {}
-            <div className="font-semibold">
-              <p className="text-sm font-medium mt-4 text-white">Input:</p>
-              <div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-                {problem?.examples[activeTestCaseId].inputText}
-              </div>
-              <p className="text-sm font-medium mt-4 text-white">Output:</p>
-              <div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-                {problem?.examples[activeTestCaseId].outputText}
-              </div>
+              )}
             </div>
           </div>
         </Split>

@@ -8,7 +8,7 @@ import { problems } from "@/lib/problems";
 const Workspace = ({ params }: { params: { slug: string } }) => {
   const { slug} = params;
   const problem = problems[slug];
-  const [success, setSuccess] = useState(false);
+
   const [solved, setSolved] = useState(false);
   return (
     <Split className="split h-full">
@@ -16,7 +16,6 @@ const Workspace = ({ params }: { params: { slug: string } }) => {
       <div>
         <PlayGround
           problem={problem}
-          setSuccess={setSuccess}
           setSolved={setSolved}
         />
       </div>
