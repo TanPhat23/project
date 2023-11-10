@@ -145,3 +145,10 @@ code {
   color: white;
   font-size: 1rem;
 }
+.enlargeOnHover {
+  transition: transform 0.2s; /* Add a smooth transition effect */
+}
+
+.enlargeOnHover:hover {
+  transform: scale(1.1); /* Increase the size when hovered over (1.1 is 10% larger) */
+}

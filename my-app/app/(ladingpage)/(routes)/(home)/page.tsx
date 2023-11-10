@@ -4,7 +4,20 @@ import { useState, useEffect } from "react";
 import SplitType from "split-type";
 import gsap from "gsap";
 
-
+const langLogos = [
+  {
+    value: "/C++.png",
+    label: "cpp",
+  },
+  {
+    value: "/Python.png",
+    label: "python",
+  },
+  {
+    value: "/JavaScript.png",
+    label: "javascript",
+  },
+];
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
@@ -22,19 +35,34 @@ export default function Home() {
     delay: 0.05,
     duration: 0.5,
   });
-  gsap.from(".logo", { duration: 1.5, opacity: 0.7, scale: 0.9, ease: "back" });
-
+  gsap.from(".logo", { duration: 2, opacity: 0.7, scale: 0.9, ease: "back" });
+  gsap.to(".lang", { duration: 1.5, opacity: 0.9, scale: 0.9, ease: "in" });
   return (
     <div
       className="flex justify-between h-screen overflow-hidden
      w-screen "
     >
-      <h1
-        className="m-32 text-5xl flex justify-center md:w-32 lg:w-3/4"
-        id="text"
-      >
-        A GOOD PLACE FOR YOU TO PRACTICE CODING
-      </h1>
+      <div>
+        <h1
+          className="m-32 text-5xl flex justify-center md:w-32 lg:w-2/4 font-semibold"
+          id="text"
+        >
+          A GOOD PLACE FOR YOU TO PRACTICE CODING
+        </h1>
+        <div className="m-32 flex justify-between md:w-32 lg:w-2/4">
+          {langLogos.map((logo) => (
+            <Image
+              key={logo.label}
+              src={logo.value}
+              width={100}
+              height={100}
+              alt=""
+              className="lang  hover:scale-125"
+            />
+          ))}
+        </div>
+      </div>
+
       <div
         className={`${
           !isVisible
@@ -47,8 +75,8 @@ export default function Home() {
             <Image
               className="logo"
               src="/icon.png"
-              width={550}
-              height={600}
+              width={500}
+              height={500}
               alt="school"
             />
           </div>
