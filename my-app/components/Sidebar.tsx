@@ -1,11 +1,13 @@
-"use client"
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Book, Brain, Home } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { Progress } from "./ui/progress";
+
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 
 const routes = [
@@ -27,6 +29,8 @@ const routes = [
 ];
 
 export const Sidebar = () => {
+  const maxProblemSolved = 10;
+  const [numberProblemSolved, setnumberProblemSolved] = useState(0)
   const pathname = usePathname();
   return (
     <div className="space y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
@@ -52,13 +56,20 @@ export const Sidebar = () => {
               )}
             >
               <div className="flex flex-1 items-center">
-                <route.icon className={("h-5 w-5 mr-3 ")} />
+                <route.icon className={"h-5 w-5 mr-3 "} />
                 {route.label}
               </div>
             </Link>
           ))}
         </div>
       </div>
+      {/* <button onClick={() => setnumberProblemSolved(numberProblemSolved + 1)}>
+        E
+      </button>
+      <Progress
+        className="w-3/4 m-8"
+        value={(numberProblemSolved / maxProblemSolved) * 100}
+      /> */}
     </div>
   );
 };

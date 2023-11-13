@@ -19,6 +19,7 @@ export default function AddData() {
     dislikedProblems: [],
     solvedProblems: [],
     starredProblems: [],
+    numberProblemSolved: 0,
   };
   const { getToken } = useAuth();
   const { push } = useRouter();

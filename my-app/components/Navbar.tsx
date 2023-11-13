@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { Progress } from "./ui/progress";
 
 const links = [
   {

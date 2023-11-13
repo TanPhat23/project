@@ -140,11 +140,11 @@ const CodePage = () => {
                     pre: ({ node, ...props }) => (
                       <div className="overflow-auto w-full my-2 bg-gray-700 p-2 rounded-lg">
                         <Button
-                          className="w-21 h-8 text-white mb-2 flex justify-between hover:bg-gray-800"
+                          className="w-21 h-8 text-white mb-2 flex justify-between hover:bg-gray-800 space-y-2 flex-between"
                           onClick={() => copyCode()}
                         >
-                          <Clipboard width={15} height={20}/>
-                          <p>CopyCode</p>
+                          <Clipboard width={15} height={25}/>
+                          <p>Copy Code</p>
                         </Button>
                         <pre {...props} />
                       </div>
