@@ -8,7 +8,6 @@ interface ChatCompletionRequestMessage {
 }
 const openai = new OpenAI({
   apiKey: process.env.OPEN_AI_KEY,
-  timeout: 120 * 1000,
 });
 const instructionMessage: ChatCompletionRequestMessage = {
   role: "system",
