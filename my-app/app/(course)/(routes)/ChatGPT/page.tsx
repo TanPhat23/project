@@ -39,18 +39,10 @@ const CodePage = () => {
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      const response = await fetch("/api/code", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: newMessages,
-        }),
-      });
-      const responseData = await response.json();
-      setMessages((current) => [...current, userMessage, responseData]);
-      form.reset();
+       const response = await axios.post("/api/code", {
+         messages: newMessages,
+       });
+       setMessages((current) => [...current, userMessage, response.data]);
     } catch (error: any) {
     } finally {
       router.refresh();
