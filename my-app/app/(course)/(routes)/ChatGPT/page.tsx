@@ -21,7 +21,6 @@ import { toast } from "react-toastify";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { v4 as uuidv4 } from "uuid";
 
-
 const CodePage = () => {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
@@ -35,15 +34,22 @@ const CodePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage : ChatCompletionMessageParam = {
+      const userMessage: ChatCompletionMessageParam = {
         role: "user",
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/code", {
-        messages: newMessages,
+      const response = await fetch("/api/code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: newMessages,
+        }),
       });
-      setMessages((current) => [...current, userMessage, response.data]);
+      const responseData = await response.json();
+      setMessages((current) => [...current, userMessage, responseData]);
       form.reset();
     } catch (error: any) {
     } finally {
