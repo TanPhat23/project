@@ -1,6 +1,5 @@
 import { firestore } from "@/lib/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
-export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const problems = await getDocs(collection(firestore, "problems"));
