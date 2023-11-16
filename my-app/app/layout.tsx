@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
-import ErrorBoundary from "@/components/ErrorBoundary";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -22,14 +21,12 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <ErrorBoundary fallback={<div>Error occurred!</div>}>
         <html lang="en" className="overflow-x-hidden">
           <body className={inter.className}>
             <ToastContainer />
             {children}
           </body>
         </html>
-      </ErrorBoundary>
     </ClerkProvider>
   );
 }
