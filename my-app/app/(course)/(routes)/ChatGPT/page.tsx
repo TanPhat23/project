@@ -39,7 +39,7 @@ const CodePage = () => {
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/code", {
+      const response = await axios.put("/api/code", {
         messages: newMessages,
       });
       setMessages((current) => [...current, userMessage, response.data]);

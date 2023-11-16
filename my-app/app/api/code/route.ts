@@ -12,7 +12,7 @@ const instructionMessage: ChatCompletionMessageParam= {
   content:
     "You are a code generator, You must answer in only markdown code snippet. Use code snippet for explanation",
 };
-export async function POST(req: Request) {
+export async function PUT(req: Request) {
   try {
     const { userId } = auth();
     const body = await req.json();
