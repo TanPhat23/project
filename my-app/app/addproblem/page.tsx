@@ -32,7 +32,7 @@ export default function AddProblems() {
   return (
     <div>
       <form
-        className="p-6 flex flex-col w-1/6 outline-1 outline-gray-300"
+        className="p-6 flex flex-col w-1/6 outline-1 outline-gray-300 text-center"
         onSubmit={handleSubmit}
       >
         <input
