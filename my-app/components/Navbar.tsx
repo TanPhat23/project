@@ -1,21 +1,12 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { Progress } from "./ui/progress";
+
 
 const links = [
   {
-    label: "Contact",
-    href: "/contact",
-  },
-  {
     label: "Course",
     href: "/course",
-  },
-  {
-    label: "Info",
-    href: "/info",
   },
 ];
 const Navbar = () => {
@@ -27,7 +18,7 @@ const Navbar = () => {
           <h1 className="hover:opacity-10">IT-LEARN</h1>
         </Link>
       </div>
-      <div className="flex justify-evenly w-1/3">
+      <div className="flex justify-evenly w-1/12">
         {links.map((link) => (
           <Link className="hover:opacity-10" key={link.href} href={link.href}>
             {link.label}
