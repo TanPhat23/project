@@ -1,14 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "@/lib/firebase/firebase";
 import { useRouter } from "next/navigation";
 
 export default function AddData() {
   const { user } = useUser();
-  const auth = getAuth();
   const userData = {
     uid: user?.id.toString(),
     email: user?.emailAddresses.toString(),
