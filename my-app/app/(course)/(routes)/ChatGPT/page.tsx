@@ -18,12 +18,12 @@ import Empty from "@/components/chatGPTComponenets/empty";
 import UserAvatar from "@/components/chatGPTComponenets/user-avatar";
 import BotAvatar from "@/components/chatGPTComponenets/bot-avatar";
 import { toast } from "react-toastify";
-import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
-import { v4 as uuidv4 } from "uuid";
 
 const CodePage = () => {
   const router = useRouter();
-  const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
+  const [messages, setMessages] = useState<
+    Array<{ role: string; content: string }>
+  >([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,15 +34,16 @@ const CodePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionMessageParam = {
+      const userMessage = {
         role: "user",
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-       const response = await axios.post("/api/code", {
-         messages: newMessages,
-       });
-       setMessages((current) => [...current, userMessage, response.data]);
+      const response = await axios.post("/api/code", {
+        messages: newMessages,
+      });
+      setMessages((current) => [...current, userMessage, response.data]);
+      form.reset();
     } catch (error: any) {
     } finally {
       router.refresh();
@@ -125,11 +126,7 @@ const CodePage = () => {
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
               <div
-                key={
-                  message.content && typeof message.content === "string"
-                    ? message.content
-                    : uuidv4()
-                }
+                key={message.content}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user"
@@ -138,33 +135,27 @@ const CodePage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                {typeof message.content === "string" ? (
-                  <ReactMarkdown
-                    components={{
-                      pre: ({ node, ...props }) => (
-                        <div className="overflow-auto w-full my-2 bg-gray-700 p-2 rounded-lg">
-                          <Button
-                            className="w-21 h-8 text-white mb-2 flex justify-between hover:bg-gray-800 space-y-2 flex-between"
-                            onClick={() => copyCode()}
-                          >
-                            <Clipboard width={15} height={25} />
-                            <p>Copy Code</p>
-                          </Button>
-                          <pre {...props} />
-                        </div>
-                      ),
-                      code: ({ ...props }) => (
-                        <code
-                          className="bg-gray-700 rounded-lg p-1"
-                          {...props}
-                        />
-                      ),
-                    }}
-                    className="text-m font-semibold overflow-hidden leading-7"
-                  >
-                    {message.content}
-                  </ReactMarkdown>
-                ) : null}
+                <ReactMarkdown
+                  components={{
+                    pre: ({ node, ...props }) => (
+                      <div className="overflow-auto w-full my-2 bg-gray-700 p-2 rounded-lg">
+                        <Button
+                          className="w-21 h-8 text-white mb-2 flex justify-between hover:bg-gray-800 space-y-2 flex-between"
+                          onClick={() => copyCode()}
+                        >
+                          <p>Copy Code</p>
+                        </Button>
+                        <pre {...props} />
+                      </div>
+                    ),
+                    code: ({ ...props }) => (
+                      <code className="bg-gray-700 rounded-lg p-1" {...props} />
+                    ),
+                  }}
+                  className="text-m font-semibold overflow-hidden leading-7"
+                >
+                  {message.content || ""}
+                </ReactMarkdown>
               </div>
             ))}
           </div>
