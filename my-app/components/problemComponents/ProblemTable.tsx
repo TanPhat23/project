@@ -9,6 +9,7 @@ import {
   getDocs,
   orderBy,
   query,
+  setDoc,
 } from "firebase/firestore";
 import { DBProblem } from "@/lib/problems/types";
 import { useUser } from "@clerk/nextjs";
@@ -87,7 +88,8 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
               <td className={`px-6 py-4`}>{problem.category}</td>
               <td className={`px-6 py-4`}>
                 {problem.videoId ? (
-                  <YoutubeIcon className="hover:text-red-500 cursor-pointer"
+                  <YoutubeIcon
+                    className="hover:text-red-500 cursor-pointer"
                     onClick={() => {
                       setYoutubePlayer({
                         isOpen: true,
@@ -161,9 +163,26 @@ function useGetProblems(
 function useGetSolvedProblems() {
   const { user } = useUser();
   const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
+  const userData = {
+    uid: user?.id.toString(),
+    email: user?.emailAddresses.toString(),
+    displayName: user?.username?.toString(),
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    likedProblems: [],
+    dislikedProblems: [],
+    solvedProblems: [],
+    starredProblems: [],
+    numberProblemSolved: 0,
+  };
+
   useEffect(() => {
     const getSolvedProblems = async () => {
       const userRef = doc(firestore, "users", user!.id);
+      if (!userRef) {
+        if (user)
+          await setDoc(doc(firestore, "users", user?.id.toString()), userData);
+      }
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         setSolvedProblems(userDoc.data().solvedProblems);

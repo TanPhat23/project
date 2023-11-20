@@ -25,7 +25,7 @@ const testimonials = [
     name: "Trong",
     avatar: "M",
     title: "Team Member",
-    description: "",
+    description: "No one trustable, only variable",
   },
 ];
 

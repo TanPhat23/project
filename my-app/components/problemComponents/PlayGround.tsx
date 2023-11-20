@@ -73,6 +73,7 @@ const PlayGround: React.FC<PlayGRoundProps> = ({ problem, setSolved }) => {
       setSuccess(true);
       setSolved(true);
       const userRef = doc(firestore, "users", user.id);
+
       await updateDoc(userRef, {
         solvedProblems: arrayUnion(id),
       });
