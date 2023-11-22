@@ -199,14 +199,13 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
   return (
     <div className="bg-dark-layer-1">
       {/* TAB */}
-      <div className="flex h-11 w-full items-center pt-2 bg-dark-layer-2 text-white overflow-x-hidden">
-        <div
-          className={
-            "bg-dark-layer-1 rounded-t-[5px] px-5 py-[10px] text-xs cursor-pointer"
-          }
-        >
+      <div className="flex w-full gap-8 px-4 h-9 rounded-t-lg bg-dark-layer-2 items-center text-xs border-b-[1px] border-[#454545] font-medium text-[#eff1f6bf]">
+        <button className="flex items-center border-b-[2px] border-[#B3B3B3] h-full text-white">
           Description
-        </div>
+        </button>
+        <button className="hover:text-white">Editorial</button>
+        <button className="hover:text-white">Solutions</button>
+        <button className="hover:text-white">Submissions</button>
       </div>
 
       <div className="flex px-0 py-4 h-[calc(100vh-100px)] overflow-y-auto">

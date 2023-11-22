@@ -20,9 +20,7 @@ export default async function ProblemPage({
   if (!problem) return notFound;
   return (
     <div>
-      <div className="bg-dark-layer-1 text-white ">
-        <Navbar />
-      </div>
+      <Navbar />
       <Workspace params={params} />
     </div>
   );
