@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@uiw/codemirror-theme-vscode": "^4.21.20",
     "@uiw/react-codemirror": "^4.21.20",
+    "ai": "^2.2.25",
     "assert": "^2.1.0",
     "axios": "^1.6.1",
     "class-variance-authority": "^0.7.0",

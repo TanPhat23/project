@@ -1,16 +1,14 @@
 "use client";
-import axios from "axios";
 import * as z from "zod";
 import Heading from "@/components/chatGPTComponenets/heading";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Clipboard, Code } from "lucide-react";
+import {  Code } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "@/lib/constant";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import Loader from "@/components/chatGPTComponenets/loader";
@@ -18,12 +16,9 @@ import Empty from "@/components/chatGPTComponenets/empty";
 import UserAvatar from "@/components/chatGPTComponenets/user-avatar";
 import BotAvatar from "@/components/chatGPTComponenets/bot-avatar";
 import { toast } from "react-toastify";
+import { useChat } from "ai/react";
 
 const CodePage = () => {
-  const router = useRouter();
-  const [messages, setMessages] = useState<
-    Array<{ role: string; content: string }>
-  >([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,23 +27,10 @@ const CodePage = () => {
   });
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const userMessage = {
-        role: "user",
-        content: values.prompt,
-      };
-      const newMessages = [...messages, userMessage];
-      const response = await axios.put("/api/code", {
-        messages: newMessages,
-      });
-      setMessages((current) => [...current, userMessage, response.data]);
-      form.reset();
-    } catch (error: any) {
-    } finally {
-      router.refresh();
-    }
-  };
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: "/api/code",
+  });
+
   const copyCode = () => {
     try {
       const codeBlock = document.querySelector(".bg-gray-700 code");
@@ -85,19 +67,20 @@ const CodePage = () => {
         <div>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={handleSubmit}
               className=" rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2"
             >
               <FormField
                 name="prompt"
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
                         placeholder="How do I calculate the radius of a circle?"
-                        {...field}
+                        value={input}
+                        onChange={handleInputChange}
                       />
                     </FormControl>
                   </FormItem>
@@ -124,9 +107,9 @@ const CodePage = () => {
             <Empty label="No conversation started" />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <div
-                key={message.content}
+                key={index}
                 className={cn(
                   "p-8 w-full flex items-start gap-x-8 rounded-lg",
                   message.role === "user"
